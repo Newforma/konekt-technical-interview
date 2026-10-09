@@ -10,6 +10,7 @@ export const MainLayout = () => {
   const menuItems = [
     { text: 'List View', icon: <TableChartIcon />, path: '/list' },
     { text: 'Card View', icon: <ViewModuleIcon />, path: '/cards' },
+    { text: 'Ask', icon: <ViewModuleIcon />, path: '/ask' },
   ];
 
   const pathnames = location.pathname.split('/').filter((x) => x);

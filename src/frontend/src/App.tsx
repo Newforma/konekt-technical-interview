@@ -3,6 +3,7 @@ import { MainLayout } from './layouts/MainLayout';
 import Home from './pages/Home';
 import ListView from './pages/ListView';
 import CardView from './pages/CardView';
+import Ask from './pages/Ask';
 import './App.css';
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="list" element={<ListView />} />
           <Route path="cards" element={<CardView />} />
+          <Route path="ask" element={<Ask />} />
         </Route>
       </Routes>
     </BrowserRouter>
