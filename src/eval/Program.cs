@@ -43,7 +43,7 @@ foreach (var c in cases)
     }
     if (c.ExpectedSources is { Count: > 0 })
     {
-        var ok = c.ExpectedSources.All(s => r.Sources.Contains(s));
+        var ok = c.ExpectedSources.All(s => r.Sources.Contains(s)) && r.Sources.Count <= (c.MaxSources ?? int.MaxValue);
         cites = Mark(ok); citeTotal++; citeOk += ok ? 1 : 0;
     }
     if (c.ExpectAbstain)
@@ -78,4 +78,4 @@ static string FindRepoRoot()
 }
 
 record EvalCase(string Id, string Question, List<string>? AnswerContainsAny, List<string>? ExpectedSources,
-    bool ExpectAbstain, List<string>? MustNotContain);
+    bool ExpectAbstain, List<string>? MustNotContain, int? MaxSources);
