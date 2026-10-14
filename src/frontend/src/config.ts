@@ -4,7 +4,7 @@
  */
 export const BASE_PATH: string = import.meta.env.PUBLIC_BASE_PATH ?? '';
 
-/** Root of the API: a local port normally, the code-server proxy of port 5008 on the VM. */
+/** Root of the API: a local port normally, the code-server proxy of port 5008 on the VM (/proxy strips the prefix, the API does not know it). */
 export const API_ROOT: string = BASE_PATH
-  ? `${window.location.origin}/absproxy/5008`
+  ? `${window.location.origin}/proxy/5008`
   : 'http://localhost:5008';
