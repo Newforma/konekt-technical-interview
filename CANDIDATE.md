@@ -46,6 +46,18 @@ You do not need to finish everything. Be explicit about what you did not do and 
 | `dotnet run --project src/eval` | Prints the score card (offline mode by default, no network) |
 | `dotnet test src/tests`         | Runs the unit tests                                         |
 
+## Running the app on the interview VM (browser)
+
+On the VM you work in the browser editor. The app runs on the VM, and you open it through the editor URL
+(`<editor-url>` below is the address in your browser bar, without the path).
+
+1. Open a terminal in the editor and start the API: `cd src/backend && dotnet run`
+2. Open a second terminal and start the front end: `cd src/frontend && npm run start:vm`
+3. Open `<editor-url>/absproxy/3101/` in a new tab. The "Ask" page is in the left menu.
+4. To call the API directly: `<editor-url>/proxy/5008/api/projects`
+
+The database (MySQL) is already running. The AI mode is already set to `bedrock`.
+
 ## LLM modes
 
 - **offline** (default): no language model. The "answer" is the text of the retrieved chunks. Good to work on retrieval, sources and abstention.
