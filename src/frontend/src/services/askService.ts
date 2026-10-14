@@ -1,10 +1,12 @@
+import { API_ROOT } from '../config';
+
 export interface AskResponse {
   answer: string;
   sources: string[];
   abstained: boolean;
 }
 
-const API_URL = 'http://localhost:5008/api/ask';
+const API_URL = `${API_ROOT}/api/ask`;
 
 export const ask = async (question: string): Promise<AskResponse> => {
   const response = await fetch(API_URL, {

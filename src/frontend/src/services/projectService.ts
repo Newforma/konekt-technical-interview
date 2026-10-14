@@ -1,6 +1,8 @@
 import type { Project } from '../types';
 
-const API_URL = 'http://localhost:5008/api/projects';
+import { API_ROOT } from '../config';
+
+const API_URL = `${API_ROOT}/api/projects`;
 
 export const getProjects = async (): Promise<Project[]> => {
   try {

@@ -4,11 +4,12 @@ import Home from './pages/Home';
 import ListView from './pages/ListView';
 import CardView from './pages/CardView';
 import Ask from './pages/Ask';
+import { BASE_PATH } from './config';
 import './App.css';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASE_PATH}>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
