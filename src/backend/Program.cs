@@ -18,9 +18,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.Configure<LlmOptions>(builder.Configuration.GetSection("Llm"));
 var corpusPath = Path.GetFullPath(builder.Configuration["Rag:CorpusPath"] ?? "../../corpus", builder.Environment.ContentRootPath);
 builder.Services.AddSingleton(_ => CorpusLoader.Load(corpusPath));
-if (string.Equals(builder.Configuration["Llm:Mode"], "http", StringComparison.OrdinalIgnoreCase))
+var llmMode = builder.Configuration["Llm:Mode"];
+if (string.Equals(llmMode, "http", StringComparison.OrdinalIgnoreCase))
 {
     builder.Services.AddHttpClient<ILlmClient, OpenAiCompatibleLlmClient>();
+}
+else if (string.Equals(llmMode, "bedrock", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddSingleton<Amazon.BedrockRuntime.IAmazonBedrockRuntime>(_ => new Amazon.BedrockRuntime.AmazonBedrockRuntimeClient());
+    builder.Services.AddSingleton<ILlmClient, BedrockLlmClient>();
 }
 else
 {

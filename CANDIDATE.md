@@ -49,6 +49,7 @@ You do not need to finish everything. Be explicit about what you did not do and 
 ## LLM modes
 
 - **offline** (default): no language model. The "answer" is the text of the retrieved chunks. Good to work on retrieval, sources and abstention.
+- **bedrock**: calls Amazon Bedrock with the AWS identity of the machine (used on the interview VM). Set `Llm__Mode=bedrock` and `Llm__Model=<model id>`.
 - **http**: calls an OpenAI-compatible endpoint. Your interviewer gives you the values. Set them as environment variables:
 
 ```bash

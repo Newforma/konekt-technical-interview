@@ -1,5 +1,6 @@
 // Runs the questions in eval/questions.json through RagService and prints a score card.
 //   dotnet run --project src/eval            (offline mode, no network)
+//   Llm__Mode=bedrock Llm__Model=<model id> dotnet run --project src/eval   (needs an AWS session)
 //   Llm__Mode=http Llm__BaseUrl=... Llm__ApiKey=... Llm__Model=... dotnet run --project src/eval
 // Exit code is always 0: the score is a compass, not a gate.
 using System.Text.Json;
@@ -15,9 +16,12 @@ var config = new ConfigurationBuilder()
 
 var llmOptions = new LlmOptions();
 config.GetSection("Llm").Bind(llmOptions);
-ILlmClient llm = llmOptions.Mode.Equals("http", StringComparison.OrdinalIgnoreCase)
-    ? new OpenAiCompatibleLlmClient(new HttpClient { Timeout = TimeSpan.FromSeconds(60) }, Options.Create(llmOptions))
-    : new OfflineLlmClient();
+ILlmClient llm = llmOptions.Mode.ToLowerInvariant() switch
+{
+    "http" => new OpenAiCompatibleLlmClient(new HttpClient { Timeout = TimeSpan.FromSeconds(60) }, Options.Create(llmOptions)),
+    "bedrock" => new BedrockLlmClient(new Amazon.BedrockRuntime.AmazonBedrockRuntimeClient(), Options.Create(llmOptions)),
+    _ => new OfflineLlmClient(),
+};
 
 var rag = new RagService(CorpusLoader.Load(Path.Combine(root, "corpus")), llm);
 var cases = JsonSerializer.Deserialize<List<EvalCase>>(

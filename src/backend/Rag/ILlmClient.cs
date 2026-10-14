@@ -61,3 +61,26 @@ public class OpenAiCompatibleLlmClient(HttpClient http, Microsoft.Extensions.Opt
         return doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "";
     }
 }
+
+/// <summary>Client for Amazon Bedrock (Converse API). Authenticates with the default AWS chain (the instance role on the interview VM).</summary>
+public class BedrockLlmClient(Amazon.BedrockRuntime.IAmazonBedrockRuntime bedrock, Microsoft.Extensions.Options.IOptions<LlmOptions> options) : ILlmClient
+{
+    public async Task<string> CompleteAsync(string systemPrompt, string userPrompt, CancellationToken ct = default)
+    {
+        var response = await bedrock.ConverseAsync(new Amazon.BedrockRuntime.Model.ConverseRequest
+        {
+            ModelId = options.Value.Model,
+            System = [new Amazon.BedrockRuntime.Model.SystemContentBlock { Text = systemPrompt }],
+            Messages =
+            [
+                new Amazon.BedrockRuntime.Model.Message
+                {
+                    Role = Amazon.BedrockRuntime.ConversationRole.User,
+                    Content = [new Amazon.BedrockRuntime.Model.ContentBlock { Text = userPrompt }],
+                },
+            ],
+            InferenceConfig = new Amazon.BedrockRuntime.Model.InferenceConfiguration { MaxTokens = 1024 },
+        }, ct);
+        return string.Concat(response.Output.Message.Content.Select(c => c.Text));
+    }
+}
