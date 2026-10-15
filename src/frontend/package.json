@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rsbuild build",
     "start": "rsbuild dev --open",
-    "start:vm": "PUBLIC_BASE_PATH=/absproxy/3101 rsbuild dev --host 0.0.0.0",
+    "start:vm": "PUBLIC_BASE_PATH=/app rsbuild dev --host 0.0.0.0",
     "preview": "rsbuild preview"
   },
   "dependencies": {
